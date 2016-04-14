@@ -27,7 +27,7 @@ Mijia BLE SDK是在蓝牙芯片原厂SDK基础上，加上小米 Profile后封装得到，目的是方便合
 ## 安全连接/认证
 Mi Serivce在蓝牙基础连接上建立一个安全认证的流程，用于防止中间人攻击以及重放攻击。这一步骤已经内置在SDK中，设备一旦与APP建立了蓝牙连接后，会自动开始安全认证，安全认证的结果会回调到应用层,建议开发者在收到auth_fail的消息后能主动断开蓝牙连接。
 
-'''C
+```C
 int miss_auth_fail_ind_handler(ke_msg_id_t const msgid,
                                     struct miss_authFail_ind const *param,
                                     ke_task_id_t const dest_id,
@@ -48,7 +48,7 @@ int miss_bond_succ_ind_handler(ke_msg_id_t const msgid,
     LOG_DEBUG("app_task bond succ\r\n");
     return (KE_MSG_CONSUMED);
 }
-'''
+```
 
 
 ## 长连接
