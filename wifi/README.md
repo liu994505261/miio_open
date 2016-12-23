@@ -341,7 +341,7 @@ MIIO芯片保留了一些命令名，用来通知主控MCU特定的事件。这�
 
 ## 利用开放平台调试 第一个HELLO WORLD
 
-首先你需要在[开放平台](https://open.home.mi.com/) 注册成为开发者。并且使用相同的小米账号，登录[小米智能家庭APP](http://home.mi.com/index.html)。
+首先你需要在[开放平台](https://open.home.mi.com/) 注册成为开发者。并且使用相同的小米账号，登录[米家APP](http://home.mi.com/index.html)。
 
 开放平台里面介绍了一些基本概念，请务必提前阅读。
 
