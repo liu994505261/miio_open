@@ -4,7 +4,7 @@
 
 ## WIFI模组硬件简介
 
-小米MHCW03P模组开发板外观：
+### 小米MHCW03P模组开发板外观：
 
 ![](./MHCW03P/dev_board.jpg)
 
@@ -37,6 +37,16 @@ ESP SDK VER: 1.3.0(2ecfb74)
 digital_did is 12593364
 mac address is f0b42905b742
 ```
+
+### 小米MHCWB2P模组开发板外观：
+
+![](./MHCWB2P/dev_board_MHCWB2P.png)
+
+管脚图：
+
+![](./MHCWB2P/pins_MHCWB2P.png)
+
+原理图：
 
 
 ## 设备固件研发
