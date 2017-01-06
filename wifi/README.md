@@ -46,7 +46,7 @@ mac address is f0b42905b742
 
 ![](./MHCWB2P/pins_MHCWB2P.png)
 
-原理图：
+- LOG输出口 115200 8N1
 
 
 ## 设备固件研发
