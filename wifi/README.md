@@ -446,7 +446,7 @@ MCU上电后，设置产品的mcu_version。
 | 步骤 | MIIO芯片 | 用户MCU |
 |------|----------|---------|
 |1|MIIO芯片接到来自网络的升级命令，开始下载用户MCU固件文件到缓冲区，下载完成并交验通过。|     |	 
-|2|关闭除升级所需之外的所有文本命令。所剩可执行命令为：get\_down,result.对其他所有命令调用都返回error|  ↑get\_down↓down update_fw  ↑result “ready” ↓ok|
+|2|关闭除升级所需之外的所有文本命令。所剩可执行命令为：get\_down,result.对其他所有命令调用都返回error|  ↑get\_down↓down update_fw  <br>↑result “ready” ↓ok|
 |3|收到result “ready”后，进入Xmodem模式|收到ok后，进入Xmodem模式|
 |4|Xmodem传输|Xmodem接收|
 |5|传输完成，退出Xmodem模式，重新打开所有文本命令，擦除下载缓冲区里的固件|接收完成，校验通过，重启。|
