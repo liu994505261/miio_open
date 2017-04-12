@@ -35,7 +35,7 @@ WIFI-模组接入
 ## 开发准备
 首先你需要在[米家智能平台](https://open.home.mi.com/)注册成为开发者。并且使用相同的小米账号，登录[米家APP](http://home.mi.com/index.html)。 
 
-**[开放平台>开发引导](https://open.home.mi.com/guide.html#/id=2/)中介绍了一些基本概念，请务必提前阅读。  **
+**[开放平台>开发引导](https://open.home.mi.com/guide.html#/id=2/)中介绍了一些基本概念，请务必提前阅读。**  
 
 在开始调试之前，你需要确定产品接入方式，并在开放平台里面申请一个新产品，审批通过后，获得产品的model。（由于ssid不能超过32字节，model将限制为23个字节以内）  
 
