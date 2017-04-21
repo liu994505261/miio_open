@@ -594,6 +594,10 @@ WIFI模块参考设计注意事项：
 
 ### 底板参考设计
 
+需要参考所使用模组的尺寸规格进行模组底板设计，注意不同模组尺寸可能存在不同。
+
+下图为MHCW03P模组底板参考设计。
+
 ![bottom](./MHCW03P/bottom.png)
 
 参考：[MHCW03P_bottom.dxf](./MHCW03P/MHCW03P_bottom.dxf)
