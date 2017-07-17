@@ -68,8 +68,7 @@ WIFI-BLE双模模组接入
 
 ### LOG输出测试
 
-- MHCW03P模组LOG输出口  **74880 8N1**
-- MHCWB2P模组LOG输出口  **115200 8N1**
+- 模组LOG输出口  **115200 8N1** ，通过UART0的TX,RX作为LOG输出和指令输入口查看和调试LOG
 - 我们可以通过这个口看到模组工作状态。
 - 模组上电后，可以看到一个典型的LOG输出，包含固件版本 *firmware*， 设备DID *digital_did*， MAC地址*mac address* 等。  
 
