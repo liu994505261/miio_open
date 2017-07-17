@@ -166,7 +166,7 @@ MIIO芯片提供一套可读的串口文本命令，供外部芯片调用，一�
 5. 主控MCU调用result ”ok“，告知MIIO芯片成功完成
 6. MIIO芯片回复ok，告知结果已收到
 
-### 基础串口命令
+### WIFI串口命令
 
 #### get_down
 
@@ -357,6 +357,19 @@ MIIO芯片提供一套可读的串口文本命令，供外部芯片调用，一�
 
 #### 更多串口命令介绍见[串口命令](../md_images/new/MIIO芯片串口命令详情.pdf)
 
+
+### BLE串口命令
+
+#### ble_event
+
+- 参数：add <MAC> <eid> <pid> <beacon key>
+       delete <MAC> <eid>
+       reset/list
+- 示例：ble_event add 11:22:33:44:55:66 4100 156 ffffffffffffffffffffffff  
+- 即时返回：若参数为list则返回所有事件列表，否则返回ok/error  
+- get_down 返回：down ble_event 11:22:33:44:55:66 4100,12345678 4100,12345678  
+- json_get_down 返回：down {"method":"ble_event","params":[{"mac":"11:22:33:44:55:66"},{"eid":4100,"edata":"12345678"},{"eid":4100,"edata":"12345678"}]}
+- 说明：查看或编辑事件列表，包括增加、删除和复位。  
 
 ### 固件实现方法
 
