@@ -59,20 +59,10 @@ WIFI-模组接入
 
 ![原理图](./MHCW03P/layout.png)
 
-#### 小米MHCWB2P模组开发板外观：
-
-外观图：
-
-![外观图](./MHCWB2P/dev_board_MHCWB2P.png)
-
-管脚图：
-
-![管脚图](./MHCWB2P/pins_MHCWB2P.png)
 
 ### LOG输出测试
 
 - MHCW03P模组LOG输出口  **74880 8N1**
-- MHCWB2P模组LOG输出口  **115200 8N1**
 - 我们可以通过这个口看到模组工作状态。
 - 模组上电后，可以看到一个典型的LOG输出，包含固件版本 *firmware*， 设备DID *digital_did*， MAC地址*mac address* 等。  
 
