@@ -99,7 +99,7 @@ mac address is f0b42905b742
 
 - 你只需要通过串口(**115200 8N1**)即可与小米模组进行通信，如图：
 
-![](./MHCW03P/example.png)
+![](../wifi/MHCW03P/example.png)
 
 - 通过SecureCRT工具打开串口，输入help既可以得到支持的串口命令列表，此时证明串口工作正常。
 
