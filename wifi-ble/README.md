@@ -20,7 +20,6 @@ WIFI-BLE双模模组接入
 * [产品固件开发](#产品固件开发)
     * [模组工作原理](#模组工作原理)
     * [WIFI串口命令](#wifi串口命令)
-    * [BLE串口命令](#ble串口命令)
     * [固件实现方法](#固件实现方法)
 * [开发平台调试](#开发平台调试)
     * [设备快连](#设备快连)
@@ -356,77 +355,6 @@ MIIO芯片提供一套可读的串口文本命令，供外部芯片调用，一�
 
 **以上为模组工作必需指令，需要开发者在固件中进行实现。更多WIFI串口命令介绍见[串口命令](../md_images/new/MIIO芯片串口命令详情.pdf)**  
 
-
-### BLE串口命令
-
-#### ble_event
-
-- 参数：add \<MAC> \<eid> \<pid> \<beacon key>  
-&emsp;&emsp; &ensp; delete \<MAC> \<eid>  
-&emsp;&emsp; &ensp; reset/list  
-- 示例：ble_event add 11:22:33:44:55:66 4100 156 ffffffffffffffffffffffff
-- 即时返回：若参数为list则返回所有事件列表，否则返回ok/error
-- get_down 返回：down ble_event 11:22:33:44:55:66 4100,12345678 4100,12345678
-- json_get_down 返回：down {"method":"ble_event","params":[{"mac":"11:22:33:44:55:66"},{"eid":4100,"edata":"12345678"},{"eid":4100,"edata":"12345678"}]}
-- 说明：查看或编辑事件列表，包括增加、删除和复位。
-
-#### ble_char
-
-- 参数：read \<MAC> \<service UUID> \<characteristic UUID>  
-&emsp;&emsp; &ensp;   write \<MAC> \<service UUID> \<characteristic UUID> \<Data>  
-- 示例：ble_char read 11:22:33:44:55:66 fe95 0001  
- &emsp;&emsp; &ensp;  ble_char write 11:22:33:44:55:66 fe95 0001 87654321  
-- 即时返回：返回ok/error  
-- get_down 返回：down ble_read 11:22:33:44:55:66 fe95 0001 87654321  
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;   down ble_write 11:22:33:44:55:66 fe95 0001 succ/timeout/fail  
-- json_get_down 返回：down {"method":"ble_read","params":[{"mac":"11:22:33:44:55:66"},  
-&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;    {"svc":"FE95","char":"0001","data":"87654321"}]}  
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &ensp;   down {"method":"ble_write","params":[{"mac":"11:22:33:44:55:66"},  
-&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;    {"svc":"FE95","char":"0001","status":"succ"}]}  
-- 说明：服务中特征值读、写功能。  
-
-#### ble_notify
-
-- 参数：on/off  \<MAC> \<service UUID> \<characteristic UUID>  
-- 示例：ble_notify on 11:22:33:44:55:66 fe95 0001  
-- 即时返回：返回ok/error  
-- get_down 返回：down ble_notify 11:22:33:44:55:66 FE95 0001 87654321  
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;   down ble_notify_rsp 11:22:33:44:55:66 FE95 0001 succ/timeout/fail  
-- json_get_down 返回：down {"method":"ble_notify","params":[{"mac":"11:22:33:44:55:66"},  
-&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;    {"svc":"FE95","char":"0001","data":"87654321"}]}  
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &ensp;   down {"method":"ble_notify_rsp","params":[{"mac":"11:22:33:44:55:66"},  
-&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;    {"svc":"FE95","char":"0001","status":"succ"}]}  
-- 说明：服务中特征值notify功能使能与复位。在get_down 返回数据中，操作是否成功以ble_notify_rsp标识，收到的数据以ble_notify标识。  
-
-#### ble_connect
-
-- 参数：on \<MAC> \<pid>  
-&emsp;&emsp; &ensp;   off \<MAC>  
-- 示例：ble_connect on 11:22:33:44:55:66 156  
-- 即时返回：返回ok/error  
-- get_down 返回：down ble_connect 11:22:33:44:55:66 succ/timeout/fail  
-- json_get_down 返回：down {"method":"ble_connect","params":[{"mac":"11:22:33:44:55:66"},{"status":"succ"}]}  
-- 说明：向指定设备发起连接请求，或断开当前连接。  
-
-#### ble_config
-
-- 参数：set \<pid> \<version>  
-&emsp;&emsp; &ensp;   dump  
-- 示例：ble_config set 156 1234  
-- 即时返回：若参数为dump则返回模组ID及固件版本，否则返回ok/error  
-- 说明：查看、设置模组ID及固件版本。  
-
-#### ble_fastpair
-
-- 参数：set \<MAC> \<eid> \<pid> \<auth>  
-- 示例：ble_fastpair set 11:22:33:44:55:66 4100 156 1/0  
-- 即时返回：返回ok/error  
-- get_down 返回：down ble_fastpair 11:22:33:44:55:66 4100 156 -60  
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &emsp;   down ble_fastpair_rsp 11:22:33:44:55:66 succ/timeout/fail  
-- json_get_down 返回：down {"method":"ble_fastpair","params":[{"mac":"11:22:33:44:55:66"},  
-&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;    {"eid":4100,"pid":156,"rssi":-60}]}  
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; &ensp;   down {"method":"ble_fastpair_rsp","params":[{"mac":"11:22:33:44:55:66"},{"status":"succ"}]}  
-- 说明：设置fastpair参数。在get_down 返回数据中，收到的广播事件以ble_fastpair标识，fastpair结果以ble_fastpair_rsp标识。  
 
 
 ### 固件实现方法
