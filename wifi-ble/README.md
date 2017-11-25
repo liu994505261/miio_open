@@ -45,7 +45,7 @@ WIFI-BLE双模模组接入
 
 ### 双模模组硬件简介
 
-#### 小米MHCWB3P模组开发板
+#### 小米MHCWB3P模组
 
 外观图：
 
@@ -55,8 +55,13 @@ WIFI-BLE双模模组接入
 
 ![管脚图](./MHCWB3P/pins.png)
 
+#### 小米MHCWB3P mini开发板外观
+![外观图](./MHCWB3P/mini_board.jpg)
 
-#### 小米MHCWB2P模组开发板外观：
+   小米MHCWB3P mini开发板基于乐鑫ESP32-DevKiC mini开发板定制，使用指南参照链接：http://esp-idf.readthedocs.io/en/latest/get-started/get-started-devkitc.html#overview
+   使用mini开发板Micro USB为LOG调试串口，通讯串口参照MHCWB3P引脚图引出，使用串口转USB工具通过PC进行模拟通讯。
+
+#### 小米MHCWB2P模组带底板外观
 
 外观图：
 
