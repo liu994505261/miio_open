@@ -258,7 +258,6 @@ MCU上电后，设置产品的mcu_version。
 
 你可以下载[xmodem源代码](../md_images/xmodem.c)，然后集成到你的主控MCU当中。  
 
-*如果你使用的是Atmel系列的mcu，可以联系我们(miot-open@xiaomi.com)提供例程*
 
 #### 通过开放平台调试
 
