@@ -10,5 +10,4 @@
 ## WIFI-BLE双模模组接入
 [WIFI-BLE双模模组接入](./wifi-ble)
 
-## linux接入
 
