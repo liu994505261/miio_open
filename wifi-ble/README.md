@@ -157,6 +157,17 @@ MIIO芯片提供一套可读的串口文本命令，供外部芯片调用，MIIO
 
 **MCU上电后，需要先使用“model”，“mcu_version”设置model，固件版本号。**
 
+### ble串口指令
+
+#### ble_config
+
+- 参数：set \<pid> \<mcu_version>  
+&emsp;&emsp; &ensp;   dump  
+- 示例：ble_config set 156 0001  
+- 即时返回：若参数为dump则返回模组当前PID及固件版本，否则返回ok/error  
+- 说明：查看、设置模组ID及固件版本号。
+
+**每次模组上电，均需要通过此命令进行配置。**
 
 ### 固件实现方法
 
