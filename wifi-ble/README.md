@@ -163,10 +163,10 @@ MIIO芯片提供一套可读的串口文本命令，供外部芯片调用，MIIO
 
 - 参数：set \<pid> \<mcu_version>    
 &emsp;&emsp; &ensp;   dump  
-- 示例：↑ble_config set 156 0001  
-&emsp;&emsp; &ensp; ↓ok  
-&emsp;&emsp; &ensp; ↑ble_config dump  
-&emsp;&emsp; &ensp; ↓\["product id":190,"version":1.3.0_0000]  
+- 示例：↑ ble_config set 156 0001  
+&emsp;&emsp; &ensp; ↓ ok  
+&emsp;&emsp; &ensp; ↑ ble_config dump  
+&emsp;&emsp; &ensp; ↓ \["product id":190,"version":1.3.0_0000]  
 - 即时返回：若参数为dump则返回模组当前PID及固件版本，否则返回ok/error  
 - 说明：查看、设置模组ID及固件版本号。
 
