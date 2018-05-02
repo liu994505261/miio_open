@@ -1,7 +1,5 @@
 # 米家BLE广播协议 - Mi Beacon
 
-[TOC]
-
 ## 概述
 
 Mi Beacon属于MIOT蓝牙协议的一部分，规范了基于蓝牙4.0及以上设备的广播格式，使得小米智能家庭APP以及MIUI能进行识别以及设备间可以进行联动。
@@ -25,8 +23,7 @@ Mi Beacon属于MIOT蓝牙协议的一部分，规范了基于蓝牙4.0及以上�
 | MAC Address   | U8     |  6   |   否    | 设备MAC地址     |
 | Capability    | U8     |  1   |   否    | 设备能力        |
 | Object        | U8     |  N   |   否    | 事件或属性      |
-| Wifi MAC Address | U8  |  2   |   否    | Wifi MAC的后两字节(小端)|
-| Random Num/高位Frame Counter|U8|3|否     | 若使用加密则为必选字段 |
+| Random Number |U8|3|否     | 若使用加密则为必选字段 |
 
 ### Frame Control
 
@@ -42,7 +39,7 @@ Mi Beacon属于MIOT蓝牙协议的一部分，规范了基于蓝牙4.0及以上�
 |  9       | Binding Confirm| 置位表示是一个绑定确认包|
 |  10      | Secure Auth   | 置位表示设备支持安全芯片认证|
 |  11      | Secure Login  | 置位表示使用对称加密登陆，否则使用非对称加密登陆|
-|  12 ~ 15 | Version       | 设备版本号             |
+|  12 ~ 15 | Version       | 设备版本号(当前为4) |
 
 ### Object
 
@@ -57,6 +54,7 @@ Mi Beacon属于MIOT蓝牙协议的一部分，规范了基于蓝牙4.0及以上�
 |    编号  |   名称         |            说明         |
 |:--------:|:-------------:|:----------------------:|
 |  0       |  Connectable  | 置位表示设备有建立连接能力 |
-|  1 ~ 2   |  MESH Ability |                        |
-|  3 ~ 4   |  Binding Ability |                     |
-|  5 ~ 7   |  (Reserved)   |      保留               |
+|  1   | Centralable |                        |
+|  2   | Encryptable |                     |
+|  3 ~ 4   | BondAbility |                     |
+| 5 ~ 7 | (Reserved) | 保留 |
