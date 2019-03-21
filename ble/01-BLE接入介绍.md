@@ -64,6 +64,6 @@ lib文件申请请发送BLE SDK使用申请邮件，详见[《开发者反馈指
 
 | 芯片品牌 | 芯片型号 | SDK |
 | :--- | :--- | :--- |
-| Nordic | 51 | https://github.com/MiEcosystem/mijia_ble/tree/Nordic |
-| Nordic | 52（SDK15.2） | https://github.com/MiEcosystem/mijia_ble/tree/Nordic_SDK15.2 |
-| Silicon Labs | BG13 | https://github.com/MiEcosystem/mijia_ble/tree/Silabs |
+| Nordic | 51 | https://github.com/MiEcosystem/mijia_ble_secure/tree/nordic_legacy |
+| Nordic | 52 | https://github.com/MiEcosystem/mijia_ble_secure/tree/nordic |
+| Silicon Labs | BG13 | https://github.com/MiEcosystem/mijia_ble_secure/tree/silabs |
