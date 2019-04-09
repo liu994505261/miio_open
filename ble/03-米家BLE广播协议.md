@@ -1,23 +1,30 @@
-# Mi Beacon协议介绍
+# MiBeacon协议介绍
 
 ### 概述
 
+MiBeacon协议规定了基于蓝牙4.0及以上设备的广播格式。MiBeacon有两个主要的作用：
 
-Mi Beacon属于MIOT蓝牙协议的一部分，规范了基于蓝牙4.0及以上设备的广播格式，使得小米智能家庭APP以及MIUI能进行识别以及设备间可以进行联动。
+- 标识设备自己的身份和类型，用以被米家App连接配置。
+- 发送设备自己的状态到网关，用来远程上报状态和进行更普遍的设备联动等。
 
 ### 定义
 
-只要含有如下指定信息的广播报文，即可认为是符合了Mi Beacon广播格式
+只要含有如下指定信息的广播报文，即可认为是符合了MiBeacon广播格式
 
 - advertising中«Service Data»（0x16）含有Mi Service（UUID：0xFE95）
 - scan response中«Manufacturer Specific Data»（0xFF）含有小米公司识别码（ID：0x038F）
 
 无论是在advertising中，还是scan response中，均采用统一格式定义。
 
-<注> 所有数据均为**小端格式**
+### 注意事项
 
-<注> **v5版本的Mi Beacon禁止在scan response中添加有效object数据**
+- 所有数据均为**小端格式**。
+- v5版本的MiBeacon**禁止**在scan response中添加有效object数据。
+- 通过MiBeacon发送给网关的事件或者数据，如果要确保网关成功接收，同一事件或数据至少重复5次。
+- 两种发送MiBeacon的方式，短时间内多次重复发送(例如开门/关门事件, **要求间隔100ms重复5次或更多**)或较长时间间隔持续发送(例如温度数据，**要求间隔2s持续发送**)，按需选择。米家对于此项会验收。
+- 采用高安全级接入的设备，必须调用**米家提供的API**来发送MiBeacon事件或数据。米家对于此项会验收。
 
+<br/>
 
 ### Service Data 或 Manu Data 格式
 
@@ -50,7 +57,7 @@ C.2 : 根据Capability字段确定是否包含
 |   1   | Reserved           | 保留                                                                                     |
 |   2   | Reserved           | 保留                                                                                     |
 |   3   | isEncrypted        | 1，该包已加密，0，该包未加密                                                             |
-|   4   | MAC Include        | 1，包含固定的MAC地址，0，不包含MAC地址（如设备需要兼容 iOS, 这一位强制为1）              |
+|   4   | MAC Include        | 1，包含固定的MAC地址，0，不包含MAC地址（包含MAC地址是为了是的iOS识别此设备并进行连接）   |
 |   5   | Capability Include | 1，包含Capability，0，不包含Capability。设备未绑定前，这一位强制为1                      |
 |   6   | Object Include     | 1，包含Object，0，不包含Object                                                           |
 |   7   | Mesh               | 1，包含Mesh，0，不包含Mesh                                                               |
@@ -58,11 +65,11 @@ C.2 : 根据Capability字段确定是否包含
 |   9   | bindingCfm         | 1，需要被绑定，0，不需要被绑定（当周边有多个相同设备时，用此位来表示哪个设备需要被绑定） |
 |  10   | Secure Auth        | 1，设备支持安全芯片认证，0，不支持                                                       |
 |  11   | Secure Login       | 1，使用对称加密登陆，0，使用非对称加密登陆（目前只支持0）                                |
-| 12~15 | version            | 版本号（当前为5）                                                                        |
+| 12~15 | version            | 版本号（当前为v5）                                                                       |
 
 <注> Reserved位必须填0
 
-### Capability 字段格式
+### Capability 字段定义
 
 |  Bit  | Name        | Description                               |
 | :---: | ----------- | ----------------------------------------- |
@@ -73,28 +80,28 @@ C.2 : 根据Capability字段确定是否包含
 |   5   | I/O         | 1，包含I/O Capability字段                 |
 |  6~7  | Reserved    | 保留                                      |
 
-<注> BondAbility字段表明当周边有多个相同设备时如何确定要绑定哪个设备。无绑定：用户自主选择或基于RSSI选择。前绑定：先扫描，设备发确认包后(bindingCfm in Frame Control)进行连接。后绑定：扫描后直接连接，设备通过震动等方式确认。Combo：针对Combo芯片。
+<注> BondAbility字段表明当周边有多个相同设备时如何确定要绑定哪个设备。无绑定：用户自主选择或基于RSSI选择。前绑定：先扫描，设备发确认包后(bindingCfm in Frame Control)进行连接。后绑定：扫描后直接连接，设备通过震动等方式确认。Combo：针对Combo芯片。推荐使用前绑定模式。
 
-### I/O Capability
+### I/O Capability 定义
 
-| Byte  | Name                | Description                          |
-| :---: | ------------------- | ------------------------------------ |
-|   0   | Base I/O capability | 0-3:基础输入能力; 4-7:基础输出能力     |
-|   1   | Reserved            | 保留                                 |
+| Byte  | Name                | Description                        |
+| :---: | ------------------- | ---------------------------------- |
+|   0   | Base I/O capability | 0-3:基础输入能力; 4-7:基础输出能力 |
+|   1   | Reserved            | 保留                               |
 
 Base I/O capability类型可分为Input/Output两类，细分类型具体表示如下：
 
-| Bit  | Description         |
+|  Bit  | Description         |
 | :---: | ------------------- |
-|  0  | 设备可输入 6 位数字 |
-|  1  | 设备可输入 6 位字母 |
-|  2  | 设备可读取 NFC tag  |
-|  3  | 设备可识别 QR Code  |
-|  4  | 设备可输出 6 位数字 |
-|  5  | 设备可输出 6 位字母 |
-|  6  | 设备可生成 NFC tag  |
-|  7  | 设备可生成 QR Code  |
+|   0   | 设备可输入 6 位数字 |
+|   1   | 设备可输入 6 位字母 |
+|   2   | 设备可读取 NFC tag  |
+|   3   | 设备可识别 QR Code  |
+|   4   | 设备可输出 6 位数字 |
+|   5   | 设备可输出 6 位字母 |
+|   6   | 设备可生成 NFC tag  |
+|   7   | 设备可生成 QR Code  |
 
-### Object
+### Object 定义
 
-请参考[米家BLE Object定义](https://github.com/MiEcosystem/miio_open/blob/master/ble/%E7%B1%B3%E5%AE%B6BLE%20Object%E5%AE%9A%E4%B9%89.md)。
+请参考[米家BLE Object定义](https://github.com/MiEcosystem/miio_open/blob/master/ble/04-%E7%B1%B3%E5%AE%B6BLE%20Object%E5%AE%9A%E4%B9%89.md)。
