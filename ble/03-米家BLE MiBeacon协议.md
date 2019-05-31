@@ -35,8 +35,8 @@ MiBeacon协议规定了基于蓝牙4.0及以上设备的广播格式。MiBeacon�
 |   3   | Frame Counter           | U8     | 1                 | M                 | 序号，用于去重，不同的事件或属性上报需要不同的Frame Counter                                                                                                   |
 |   4   | MAC Address             | U8     | 6                 | C.1               | Mac地址                                                                                                                                                       |
 |   5   | Capability              | U8     | 1                 | C.1               | 设备能力，详见下表定义                                                                                                                                        |
-|   6   | I/O capability          | U8     | 2                 | C.2               | I/O能力，目前只有高安全级BLE接入才会用到此位，只支持MiBeacon v5版本。只有在绑定之前使用；当绑定完成，上报事件时(例如开门、关门)，此位也不再需要。详见下表定义 |
-|   7   | Object                  | U8     | n(根据实际需求) | C.1               | 触发事件或广播属性，[米家BLE Object定义](https://github.com/MiEcosystem/miio_open/blob/master/ble/04-%E7%B1%B3%E5%AE%B6BLE%20Object%E5%AE%9A%E4%B9%89.md)     |
+|   6   | I/O capability          | U8     | 2                 | C.2               | I/O能力，目前只有高安全级BLE接入才会用到此字段，只支持MiBeacon v5版本。只有在绑定之前使用；当绑定完成，上报事件时(例如开门、关门)，此字段也不再需要。详见下表定义 |
+|   7   | Object                  | U8     | n(根据实际需求) | C.1               | 触发事件或广播属性，[米家BLE Object定义](https://github.com/MiEcosystem/miio_open/blob/master/ble/04-%E7%B1%B3%E5%AE%B6BLE%20Object%E5%8D%8F%E8%AE%AE.md)     |
 |   8   | Random Number           | U8     | 3                 | C.1               | 如果加密则为必选字段，随机数3字节，用于加密报文                                                                                                               |
 |   9   | Message Integrity Check | U8     | 4                 | C.1               | 如果加密则为必选字段，MIC四字节                                                                                                                               |
 
@@ -62,14 +62,14 @@ C.2 : 根据Capability字段确定是否包含
 |   6   | Object Include     | 1，包含Object，0，不包含Object                                                                                                  |
 |   7   | Mesh               | 1，包含Mesh，0，不包含Mesh。普通BLE接入产品和高安全级接入，此项强制为0。Mesh接入此项强制为1。Mesh接入更多信息请参考Mesh相关文档 |
 |   8   | Reserved           | 保留                                                                                                                            |
-|   9   | bindingCfm         | 1，需要被绑定，0，不需要被绑定(当周边有多个相同设备时，用此位来表示哪个设备需要被绑定)                                        |
+|   9   | bindingCfm         | 1，需要被绑定，0，不需要被绑定(当周边有多个相同设备时，用此字段来表示哪个设备需要被绑定)                                        |
 |  10   | Secure Auth        | 1，设备支持安全芯片认证，0，不支持。普通BLE接入，此项强制为0。高安全级BLE接入和Mesh接入，此项强制为1                            |
 |  11   | Secure Login       | 1，使用对称加密登陆，0，使用非对称加密登陆(目前只支持0)                                                                       |
 | 12~15 | version            | 版本号(当前为v5)                                                                                                              |
 
 <注> Reserved位必须填0
 
-<注> 对于需要设备确认的认证过程(如蓝牙温湿度传感器，用户需要按键确定是哪个设备需要被绑定)，开发者要注意MiBeacon中bindingcfm位的使用。正常广播的MiBeacon中bindingcfm位为0，当用户触发，如按键，MiBeacon中bindingcfm位变为1，持续2~3秒后恢复为0。此时手机可以发现bindingcfm为1的设备并连接开始认证流程。
+<注> 对于需要设备确认的认证过程(如蓝牙温湿度传感器，用户需要按键确定是哪个设备需要被绑定)。正常广播的MiBeacon中bindingcfm位为0，当用户触发，如按键，MiBeacon中bindingcfm位变为1，持续2~3秒后恢复为0。此时手机可以发现bindingcfm为1的设备并连接开始认证流程。
 
 ### Capability 字段定义
 
@@ -104,7 +104,8 @@ Base I/O capability类型可分为Input/Output两类，细分类型具体表示�
 |   6   | 设备可生成 NFC tag  |
 |   7   | 设备可生成 QR Code  |
 
+<注> 此字段只有在高安全级接入中才会使用。
 
 ### Object 定义
 
-请参考[米家BLE Object定义](https://github.com/MiEcosystem/miio_open/blob/master/ble/04-%E7%B1%B3%E5%AE%B6BLE%20Object%E5%AE%9A%E4%B9%89.md)。
+请参考[米家BLE Object定义](https://github.com/MiEcosystem/miio_open/blob/master/ble/04-%E7%B1%B3%E5%AE%B6BLE%20Object%E5%8D%8F%E8%AE%AE.md)。

@@ -23,7 +23,7 @@
 **注意事项**
 
 1. 普通BLE方式接入的设备，通过GATT与米家APP交互的数据和通过MiBeacon与小米网关交互的数据都必须加密。
-2. 如何使用MiBeacon广播事件和数据请仔细参考[《米家BLE Mibeacon协议》]()。**严格遵守注意事项。**
+2. 如何使用MiBeacon广播事件和数据请仔细参考[《米家BLE Mibeacon协议》](https://github.com/MiEcosystem/miio_open/blob/master/ble/03-%E7%B1%B3%E5%AE%B6BLE%20MiBeacon%E5%8D%8F%E8%AE%AE.md)。**严格遵守注意事项。**
 
 普通BLE接入方式的软件SDK，由三部分组成：芯片原厂SDK，米家标准认证库，米家示例Demo。
 
