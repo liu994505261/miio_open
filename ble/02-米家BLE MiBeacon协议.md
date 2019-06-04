@@ -18,8 +18,8 @@ MiBeacon协议规定了基于蓝牙4.0及以上设备的广播格式。MiBeacon�
 
 - 所有数据均为**小端格式**。
 - v5版本的MiBeacon**禁止**在scan response中添加有效object数据。后续米家BLE网关只会开启passive scan，因此scan response不能被网关接收。
-- 通过MiBeacon发送给网关的事件或属性，如果要确保网关成功接收，同一事件或属性至少重复8次。如果MiBeacon中Frame Counter位相同，米家BLE网关会认为这是同一个事件或属性。如果要广播不同的事件和属性，Frame Counter位必须不同。
-- 两种发送MiBeacon的方式，短时间内多次重复发送(例如开门/关门事件, **要求间隔100ms重复8次或更多**)或较长时间间隔持续发送(例如温度数据，**要求间隔2s持续发送**)，按需选择。推荐事件选用第一种方式而属性选择第二种方式。事件或属性的定义参考[米家BLE Object协议](https://github.com/MiEcosystem/miio_open/blob/master/ble/03-%E7%B1%B3%E5%AE%B6BLE%20Object%E5%8D%8F%E8%AE%AE.md)。米家对于此项会验收。
+- 通过MiBeacon发送给网关的事件或属性，如果要确保网关成功接收，同一事件或属性至少重复10次。如果MiBeacon中Frame Counter位相同，米家BLE网关会认为这是同一个事件或属性。如果要广播不同的事件和属性，Frame Counter位必须不同。
+- 两种发送MiBeacon的方式，短时间内多次重复发送(例如开门/关门事件, **要求间隔100ms重复10次或更多**)或较长时间间隔持续发送(例如温度数据，**要求间隔2s持续发送**)，按需选择。推荐事件选用第一种方式而属性选择第二种方式。事件或属性的定义参考[米家BLE Object协议](https://github.com/MiEcosystem/miio_open/blob/master/ble/03-%E7%B1%B3%E5%AE%B6BLE%20Object%E5%8D%8F%E8%AE%AE.md)。米家对于此项会验收。
 - 采用高安全级接入的设备，必须调用**米家提供的API**来发送MiBeacon事件或属性。米家对于此项会验收。
 
 ## Service Data 或 Manu Data 格式
@@ -57,7 +57,7 @@ C.2 : 根据Capability字段确定是否包含
 |   6   | Object Include     | 1，包含Object，0，不包含Object   |
 |   7   | Mesh               | 1，包含Mesh，0，不包含Mesh。普通BLE接入产品和高安全级接入，此项强制为0。Mesh接入此项强制为1。Mesh接入更多信息请参考Mesh相关文档 |
 |   8   | Reserved           | 保留 |
-|   9   | bindingCfm         | 1，需要被绑定，0，不需要被绑定(当周边有多个相同设备时，用此字段来表示哪个设备需要被绑定)  |
+|   9   | bindingCfm         | 1，此时需要被绑定，0，不需要被绑定。当用户在开发者平台选择设备确认配对时才有效，否则置0  |
 |  10   | Secure Auth        | 1，设备支持安全芯片认证，0，不支持。普通BLE接入，此项强制为0。高安全级BLE接入和Mesh接入，此项强制为1   |
 |  11   | Secure Login       | 1，使用对称加密登陆，0，使用非对称加密登陆(目前只支持0)    |
 | 12~15 | version            | 版本号(当前为v5)    |
@@ -66,7 +66,7 @@ C.2 : 根据Capability字段确定是否包含
 
 <注> 相应的Bit位与MiBeacon的实际数据必须对应，否则APP或网关认为是不符合规范的MiBeacon直接丢弃。
 
-<注> 当周边有多个相同设备时(如多个蓝牙温湿度传感器)，用户需要按键确定是哪个设备需要被绑定。正常广播的MiBeacon中bindingcfm位为0，当用户触发，如按键，MiBeacon中bindingcfm位变为1，持续2~3秒后恢复为0。此时手机可以发现bindingcfm为1的设备并连接开始认证流程。
+<注> 当周边有多个相同设备时(如多个蓝牙温湿度传感器)，怎么指定哪个设备需要被绑定？开发者需要在开发者平台选择蓝牙配对方式，目前有三种配对方式：APP选择配对，RSSI符合配对，设备确认配对。当选择APP选择配对或RSSI符合配对时，bindingcfm置0。当选择设备确认配对时，正常广播的MiBeacon中bindingcfm位为0，当用户触发，如按键，MiBeacon中bindingcfm位变为1，持续2~3秒后恢复为0。此时手机可以发现bindingcfm为1的设备并连接开始认证流程。
 
 ## Capability 字段定义
 
@@ -79,7 +79,7 @@ C.2 : 根据Capability字段确定是否包含
 |   5   | I/O         | 1，包含I/O Capability字段                  |
 |  6~7  | Reserved    | 保留                                      |
 
-<注> BondAbility字段表明当周边有多个相同设备时如何确定要绑定哪个设备。无绑定：用户自主选择或基于RSSI选择。前绑定：先扫描，设备发确认包后(bindingCfm in Frame Control)进行连接。后绑定：扫描后直接连接，设备通过震动等方式确认。Combo：针对Combo芯片。**目前大部分产品都使用前绑定模式并配合bindingCfm使用**。此绑定方式需要在[小米IoT开发者平台](https://iot.mi.com/new/index.html)选择，并且与此处保持一致。
+<注> BondAbility字段表明当周边有多个相同设备时如何确定要绑定哪个设备。无绑定：APP选择配对，RSSI符合配对。前绑定：设备确认配对，即先扫描，设备发确认包后(bindingCfm in Frame Control)进行连接。后绑定：扫描后直接连接，设备通过震动等方式确认。Combo：针对Combo芯片。此绑定方式需要在小米IoT开发者平台选择，并且与此处保持一致。
 
 ## I/O Capability 定义
 

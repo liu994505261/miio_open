@@ -4,7 +4,7 @@
 
 ​对于普通安全级别的产品，如温湿度传感器、米家对讲机等，可采用普通BLE方式接入，无须提前烧写预置安全秘钥或增加安全芯片，开发更便捷。
 
-​对于高安全级别的产品，如蓝牙锁，可采用高安全级BLE方式接入，需搭配安全芯片使用，同时配合pin code OOB认证。
+​对于高安全级别的产品，如蓝牙智能门锁，可采用高安全级BLE方式接入，必须搭配安全芯片使用，同时配合pin code OOB认证。
 
 > BLE Mesh接入即将开放。届时会给出BLE Mesh接入的特点以及与普通BLE接入方式相比的技术选型建议。
 
@@ -29,12 +29,4 @@
 2. 每次绑定都会生成一个新的长期密钥(根密钥)，每次连接都会生成一个新的会话密钥。
 3. 高安全级接入可以应对重放攻击、窃听攻击、中间人攻击、垃圾桶攻击、暴力破解等一系列攻击手段，最大程度保证设备安全。
 
-[高安全级接入示例Demo](https://github.com/MiEcosystem/mijia_ble_secure)
-
-已支持芯片平台列表：
-
-| 芯片品牌 | 芯片型号 | SDK |
-| :--- | :--- | :--- |
-| Nordic | 51 | https://github.com/MiEcosystem/mijia_ble_secure/tree/nordic_legacy |
-| Nordic | 52 | https://github.com/MiEcosystem/mijia_ble_secure/tree/nordic |
-| Silicon Labs | BG13 | https://github.com/MiEcosystem/mijia_ble_secure/tree/silabs |
+更多内容，请参考[米家高安全级BLE接入产品开发](https://github.com/MiEcosystem/miio_open/blob/master/ble/06-%E7%B1%B3%E5%AE%B6%E9%AB%98%E5%AE%89%E5%85%A8%E7%BA%A7BLE%E6%8E%A5%E5%85%A5%E4%BA%A7%E5%93%81%E5%BC%80%E5%8F%91.md)。
