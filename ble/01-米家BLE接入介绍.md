@@ -13,45 +13,19 @@
 ## 普通BLE接入
 
 通过普通BLE方式接入后，设备将获得如下能力：
-1. 设备获得由米家服务器分配的唯一device id，并绑定在登陆米家APP的账号下。
-2. 设备可以通过BLE GATT通路与米家APP进行数据通信，此数据通道是加密的。
-3. 设备可以发送包含数据信息的MiBeacon。小米所有BLE网关都可以接收MiBeacon并转发给米家服务器。包含数据信息的MiBeacon也是加密的。后续可以根据此数据进行自动化操作配置。网络拓扑图如下。
-4. 设备可以在同一小米账号下的多个手机上同时使用。
-5. 设备可以被安全分享至另外的小米账号。
-6. 设备可以通过米家APP进行OTA。OTA的image文件必须经过米家服务器的签名，以确保image的安全性。
+1. 设备获得由米家服务器分配的唯一Device ID，并绑定在登陆米家APP的账号下。
+2. 设备可以发送包含事件或属性信息的MiBeacon。米家所有BLE网关都可以接收MiBeacon并转发给米家服务器。后续可以根据存储在米家服务器的事件或属性信息在APP上显示或进行自动化配置。如何使用MiBeacon广播事件或属性请参考[米家BLE MiBeacon协议](https://github.com/MiEcosystem/miio_open/blob/master/ble/02-%E7%B1%B3%E5%AE%B6BLE%20MiBeacon%E5%8D%8F%E8%AE%AE.md)。**严格遵守注意事项**。
+3. 设备可以在同一小米账号下的多个手机上使用。
+4. 设备可以被安全分享至另外的小米账号。
+5. 设备可以通过米家APP进行OTA。
 
-**注意事项**
+更多内容，请参考[米家普通BLE接入产品开发](https://github.com/MiEcosystem/miio_open/blob/master/ble/04-%E7%B1%B3%E5%AE%B6%E6%99%AE%E9%80%9ABLE%E6%8E%A5%E5%85%A5%E4%BA%A7%E5%93%81%E5%BC%80%E5%8F%91.md)。
 
-1. 普通BLE方式接入的设备，通过GATT与米家APP交互的数据和通过MiBeacon与小米网关交互的数据都必须加密。
-2. 如何使用MiBeacon广播事件和数据请仔细参考[《米家BLE Mibeacon协议》](https://github.com/MiEcosystem/miio_open/blob/master/ble/03-%E7%B1%B3%E5%AE%B6BLE%20MiBeacon%E5%8D%8F%E8%AE%AE.md)。**严格遵守注意事项。**
-
-普通BLE接入方式的软件SDK，由三部分组成：芯片原厂SDK，米家标准认证库，米家示例Demo。
-
-1. 芯片原厂SDK：原厂官网下载，在米家示例Demo里面有原厂的链接。
-2. 米家标准认真库lib文件申请请发送BLE SDK使用申请邮件，详见[《开发者反馈指引》](https://iot.mi.com/new/guide.html?file=11-%E5%B8%B8%E7%94%A8%E4%BF%A1%E6%81%AF/01-%E5%BC%80%E5%8F%91%E8%80%85%E5%8F%8D%E9%A6%88%E6%8C%87%E5%BC%95)。
-3. [米家示例Demo](https://github.com/MiEcosystem/mijia_ble)
-
-已支持芯片平台列表：
-
-| 芯片品牌 | 芯片型号 | SDK |
-| :--- | :--- | :--- |
-| Nordic | 51/52 | https://github.com/MiEcosystem/mijia_ble/tree/Nordic |
-| Nordic | 52(SDK15.2) | https://github.com/MiEcosystem/mijia_ble/tree/Nordic_SDK15.2 |
-| Dialog | DA14585 | https://github.com/MiEcosystem/mijia_ble/tree/Dialog |
-| NXP | QN908x / QN902x| https://github.com/MiEcosystem/mijia_ble/tree/NXP |
-| Cypress | 20706 | https://github.com/MiEcosystem/mijia_ble/tree/cypress |
-| ST | BlueNRG-1/2 | https://github.com/MiEcosystem/mijia_ble/tree/ST |
-| Silicon Labs | BG13 | https://github.com/MiEcosystem/mijia_ble/tree/Silabs |
-| Telink | 826x | https://github.com/MiEcosystem/mijia_ble/tree/telink |
-| TI | CC2640R2 | https://github.com/MiEcosystem/mijia_ble/tree/ti |
-| Chipsea | CST92F30 | https://github.com/MiEcosystem/mijia_ble/tree/Chipsea |
-
-平台提供各芯片demo见表中链接。
 
 ## 高安全级BLE接入
 
 此类接入可以提供更高的安全等级：
-1. 必须使用小米安全芯片，安全芯片可以保证设备是小米认证过的设备。
+1. 必须使用米家安全芯片，安全芯片可以保证设备是小米认证过的设备。
 2. 每次绑定都会生成一个新的长期密钥(根密钥)，每次连接都会生成一个新的会话密钥。
 3. 高安全级接入可以应对重放攻击、窃听攻击、中间人攻击、垃圾桶攻击、暴力破解等一系列攻击手段，最大程度保证设备安全。
 

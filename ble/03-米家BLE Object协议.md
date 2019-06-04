@@ -1,12 +1,10 @@
 # 米家BLE Object定义
 
-### 简介
+## 概述
 
-本文档定义了MiBeacon使用场景中的Object ID以及Object格式。设备需要上报事件或者广播属性时需要包含Object的MiBeacon。网关会解析有效的Object并上报给米家后台，因此可以执行一系列的自动化操作。
+本文档定义了MiBeacon使用场景中的Object ID以及Object格式。设备上报事件或属性时需要广播包含Object的MiBeacon。网关会解析有效的Object并上报给米家后台，可供APP显示或执行一系列的自动化操作。
 
-Object建议加密。
-
-### 格式定义
+格式定义
 
 |      字段       | 长度  |    描述    |
 | :-------------: | :---: | :--------: |
@@ -14,7 +12,7 @@ Object建议加密。
 | Object Data Len |   1   |  Data长度  |
 |   Object Data   |   N   |    数据    |
 
-### ID定义
+## ID定义
 
 由米家定义，分配如下：
 
@@ -25,7 +23,7 @@ Object建议加密。
 
 为保证数据及时、有效，并且不要给米家服务器造成较大负载压力，米家BLE网关会依据ID对不同类型数据做过滤，当数据与之前上报数据相比相隔一定时间且超出一定变化量，BLE网关才会转发该数据至米家服务器。因此专门定义了时间间隔和变化量，如下表所示。
 
-为了保证Object代表的事件和属性可以被米家BLE网关收到，包含Object的MiBeacon需要重发多次。具体参考[《米家BLE MiBeacon协议》](https://github.com/MiEcosystem/miio_open/blob/master/ble/03-%E7%B1%B3%E5%AE%B6BLE%20MiBeacon%E5%8D%8F%E8%AE%AE.md)注意事项。
+为了保证Object代表的事件和属性可以被米家BLE网关收到，包含Object的MiBeacon需要重发多次。具体参考[米家BLE MiBeacon协议](https://github.com/MiEcosystem/miio_open/blob/master/ble/02-%E7%B1%B3%E5%AE%B6BLE%20MiBeacon%E5%8D%8F%E8%AE%AE.md)注意事项。
 
 ### 通用事件
 
@@ -43,7 +41,6 @@ Object建议加密。
 |     体温     | 0x000A |       60       |   0    |
 |      锁      | 0x000B |       0        |   0    |
 |     按键     | 0x1001 |       0        |   0    |
-
 
 ### 通用属性
 
