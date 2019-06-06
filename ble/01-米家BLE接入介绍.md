@@ -6,7 +6,7 @@
 
 ​对于高安全级别的产品，如蓝牙智能门锁，可采用高安全级BLE方式接入，必须搭配安全芯片使用，同时配合pin code OOB认证。
 
-> BLE Mesh接入即将开放。届时会给出BLE Mesh接入的特点以及与普通BLE接入方式相比的技术选型建议。
+BLE Mesh接入是较新的技术，更多介绍请直接参考[米家BLE Mesh接入介绍](https://github.com/MiEcosystem/miio_open/blob/master/ble/08-%E7%B1%B3%E5%AE%B6BLE%20Mesh%E6%8E%A5%E5%85%A5%E4%BB%8B%E7%BB%8D.md)。
 
 <br/>
 
