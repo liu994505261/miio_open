@@ -268,43 +268,7 @@ Tag字段主要包含以下内容：
 
 签名信息字段包含开发者证书链及签名值，签名计算公式如下：
 
-```
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
-  <mi>S</mi>
-  <mi>i</mi>
-  <mi>g</mi>
-  <mi>n</mi>
-  <mi>a</mi>
-  <mi>t</mi>
-  <mi>u</mi>
-  <mi>r</mi>
-  <mi>e</mi>
-  <mo>=</mo>
-  <mi>D</mi>
-  <mi>S</mi>
-  <mi>A</mi>
-  <mo stretchy="false">(</mo>
-  <mi>H</mi>
-  <mi>a</mi>
-  <mi>s</mi>
-  <mi>h</mi>
-  <mo stretchy="false">(</mo>
-  <mi>F</mi>
-  <mi>i</mi>
-  <mi>r</mi>
-  <mi>m</mi>
-  <mi>w</mi>
-  <mi>a</mi>
-  <mi>r</mi>
-  <mi>e</mi>
-  <mo>+</mo>
-  <mi>T</mi>
-  <mi>a</mi>
-  <mi>g</mi>
-  <mo stretchy="false">)</mo>
-  <mo stretchy="false">)</mo>
-</math>
-```
+Signature = DSA(Hash(Firmware + Tag))
 
 设备收到OTA包后，首先提取开发者证书链，用预先存储的米家根证书验证证书链的合法性，之后基于证书链验证Firmware和Tag的合法性和完整性，验证通过后执行固件切换操作，否则忽略收到的OTA包。
 
