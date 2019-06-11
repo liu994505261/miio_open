@@ -1,18 +1,17 @@
 # 米家高安全级 BLE 产品接入指南
 <!> 本文用于指导 **固件开发者** 实现高安全级 BLE 产品接入
 
-## 准备工作
+## 0.准备工作
 ### 软件环境：
-开发环境搭建: 
 * IDE/toolchains (根据芯片 SDK 要求进行安装，如遇问题可咨询芯片原厂 FAE)
 * [JLink](https://www.segger.com/downloads/jlink/)
 * [Git](https://git-scm.com/downloads)
 
 ### 硬件环境：
-硬件平台可以选用芯片原厂的开发板，或使用在研产品 PCBA。推荐使用原厂开发板环境进行功能验证。完成功能验证后再移植到在研产品 PCBA。米家提供在开发板上实现高安全级接入的 Demo Project。<br>
+硬件平台可以选用芯片原厂的开发板，或使用在研产品 PCBA。推荐使用原厂开发板环境进行功能验证。完成功能验证后再移植到在研产品 PCBA。米家提供基于开发板实现的高安全级接入 Demo Project。<br>
 Demo Project GitHub 地址如下：（请按照各分支下 README ，完成工程导入）
 
-| 芯片厂商      | 芯片平台        | Demo Project                                                       |
+| 芯片厂商      | 芯片平台         | Demo Project                                                       |
 | :----------- | :-------       | :----------------------------------------------------------------- |
 | Nordic       | 51 Series      | https://github.com/MiEcosystem/mijia_ble_secure/tree/nordic_legacy |
 | Nordic       | 52 Series      | https://github.com/MiEcosystem/mijia_ble_secure/tree/nordic        |
@@ -20,7 +19,7 @@ Demo Project GitHub 地址如下：（请按照各分支下 README ，完成工�
 
 安全认证需要外接认证芯片。有关米家认证芯片的详细资料以及样片申请 (liuyamei@xiaomi.com)。
 
-## 代码集成
+## 1.代码集成
 (*如果开发者在 Demo Project 基础上进行开发，可以跳过本节 1~5 步*)
 
 Demo Project 代码结构：
@@ -62,7 +61,7 @@ $ git submodule add -b master https://github.com/MiEcosystem/mijia_ble_libs.git
 $ git commit -am "add submodules mijia ble api & libs"
 ```
 
-5.添加 mijia ble api 和 mijia ble libs 路径下源码到 BLE 工程中，并将路径加入工程的 `include path`。mijia ble api 会使用到 SoC SDK 中的 BLE，TIMER，IIC，FLASH 等功能，需要开发者将这些功能模块添加到工程中。 （详细资源占用情况及配置方法，请参考对应芯片分支下的 README？）。添加下列路径下代码。
+5.添加 mijia ble api 和 mijia ble libs 路径下源码到 BLE 工程中，并将路径加入工程的 `include path`。mijia ble api 会使用到 SoC SDK 中的 BLE，TIMER，IIC，FLASH 等功能，需要开发者将这些功能模块添加到工程中。 （详细资源占用情况及配置方法，请参考芯片对应分支下的 README）。添加下列路径下代码。
 ```
 mijia_ble_libs
 ├── common
@@ -94,10 +93,10 @@ mijia_ble_libs
 *<注1> MJSC为第一代米家认证芯片，已停产。MJA1为第二代米家认证芯片。* <br>
 *<注2> 如果缺省宏定义，会采用 mi_config.h 中默认值。例如，不定义 PRODUCT_ID，则默认为 0x01CF 小米蓝牙安全开发板，此产品为白名单用户可见。（如需使用此 PID 进行功能验证，请申请白名单权限）*
 
-## 米家认证
+## 2.米家认证
 (*进行以下步骤前请**先阅读** mijia ble libs [**使用手册**](https://github.com/MiEcosystem/mijia_ble_libs/blob/master/readme.md)*)
 
-高安全级 BLE 接入设备需支持 **米家安全认证协议** (`secure auth`)，此功能已在 `mijia ble libs` 中提供，使用方法如下：
+高安全级 BLE 接入设备需支持 **米家安全认证协议** `secure auth`，该功能已在 `mijia ble libs` 中集成，使用方法如下：
 
 1.芯片运行环境初始化（包括但不限于芯片电源，时钟，GPIO，TIMER，IIC，BLE stack）。
 
@@ -109,12 +108,12 @@ mijia_ble_libs
 
 4.调用 `mi_service()` 创建米家服务。米家服务提供认证数据传输通道，服务缺失将导致 App 认证失败。
 
-5.根据米家认证芯片硬件连线，定义 IIC 引脚配置 `iic_config`，实现电源管理函数 `mijia_secure_chip_power_manage()`，以及认证事件处理函数 `mi_schd_event_handler()`，进行 `mi_scheduler_init()` 初始化。（`mi_schd_event_handler()` 在收到 SCHD_EVT_OOB_REQUEST 事件的 30 秒内，产品端需根据 IO 能力（例如，键盘输入）先获取 OOB，再调用 `mi_input_oob()` 向 `mi_schduler` 提供所需 OOB。）初始化后，调用 `mi_scheduler_start(SYS_KEY_RESTORE)` 尝试读取绑定信息，执行结果会通过 `mi_schd_event_handler()` 传参返回。如果已重置，将收到 SCHD_EVT_KEY_NOT_FOUND 事件。
+5.根据米家认证芯片硬件连线，定义 IIC 引脚配置 `iic_config`，实现电源管理函数 `mijia_secure_chip_power_manage()`，以及认证事件处理函数 `mi_schd_event_handler()`，进行 `mi_scheduler_init()` 初始化。（`mi_schd_event_handler()` 在收到 SCHD_EVT_OOB_REQUEST 事件的 30 秒内，产品端要根据自身 IO 能力获取 OOB，再调用 `mi_input_oob()` 向 `mi_schduler` 提供所需 OOB。）初始化后，调用 `mi_scheduler_start(SYS_KEY_RESTORE)` 尝试读取绑定信息，执行结果会通过 `mi_schd_event_handler()` 传参返回。如果已重置，将收到 SCHD_EVT_KEY_NOT_FOUND 事件。
 [示例代码](https://github.com/MiEcosystem/mijia_ble_secure/blob/c8fdaf4daedc412c7af1fdfa39fbd59e9874d27e/main.c#L823-L830)
 
 6.将 `mi_schd_process()` 添加到 main loop 中。
 
-7.米家认证相关的所有事件，会通过 `mi_schd_event_handler()` 通知应用层：
+7.米家认证相关的事件，会通过 `mi_schd_event_handler()` 通知应用层：
 
 | 事件名称                          | 含义                                         |
 | :------------------------------- | :------------------------------------------ |
@@ -132,13 +131,14 @@ mijia_ble_libs
 | SCHD_EVT_MSC_SELF_TEST_PASS      | 认证芯片自检正常                              |
 | SCHD_EVT_MSC_SELF_TEST_FAIL      | 认证芯片自检异常                              |
 
-此外，开发者可以使用 `mi_scheduler_start()` 发送以下命令，进行本地管理：
+此外，开发者可以使用 `mi_scheduler_start()` 发送以下命令，进行本地系统管理：
 
 | 命令名称                     | 含义                                        |
 | :-------------------------- | :----------------------------------------- |
 | SYS_KEY_RESTORE             | 读取绑定信息                                 |
 | SYS_KEY_DELETE              | 删除绑定信息                                 |
 | SYS_MSC_SELF_TEST           | 认证芯片自检                                 |
+
 
 经过以上步骤，产品侧已支持米家安全认证功能，可以使用米家 App 进行功能验证。window 平台具体操作如下：
 * 打开 JLink RTT Viewer，选择对应芯片型号，连接待测产品。连接成功后，Terminal 0 下会显示产品侧 log 信息；
@@ -148,13 +148,13 @@ mijia_ble_libs
 * 退出插件，再次进入，米家 App 将进行登录操作。
 * 重置方法，目前需要两步
     - 米家 App 里删除设备
-    - 设备侧上长按重置按钮
+    - 设备上长按重置按钮
 
-## 应用层开发
+## 3.应用层开发
 认证完成后，产品便具备安全通信的能力。在安全通信的基础上，可实现各种应用功能，比如，门锁应用，透传应用。
 
 ### 米家门锁服务
-米家定义了一套门锁应用层规范 `lock profile`，实现米家 App 对门锁的统一操作。`lock profile` 仅提供门锁通用的操作、状态、事件上报功能。因此不能满足产品的其他需求(比如，指纹管理)，这需要开发者创建自定义服务，并使用安全通信方式读写自定义特征值。
+米家定义了一套门锁应用层规范 `lock profile`，使得米家 App 能对锁类产品进行统一的蓝牙操作。`lock profile` 只提供门锁通用操作、状态、事件上报功能，故不能满足产品的其他功能需求(比如，指纹管理)。如需支持其他功能，开发者可创建自定义服务，并采用安全通信方式读写自定义服务特征值。具体实现请参考 [米家透传服务](#米家透传服务)。
 
 *<注> 门锁类产品必须具备米家门锁服务，米家 App 才可以进行开关锁操作和锁事件上报*
 
@@ -176,30 +176,7 @@ mijia_ble_libs
 3.接收加密数据后，调用 `get_mi_authorization()` 判断设备当前登录状态，若已登录使用 `mi_session_decrypt()` 解密数据，再上报应用层处理。参考 stdio 服务 `on_write_permit()` 实现：
 [示例代码](https://github.com/MiEcosystem/mijia_ble_libs/blob/3b733870ca186662761f153f850537bae022fb5d/mijia_profiles/stdio_service_server.c#L76-L96)
 
-## 认证芯片区别
-
-米家高安全级BLE接入必须使用米家认证芯片，第二代认证芯片MJA1有两款供客户选择，主要参数区别如下：
-
-| 参数                     | MJA1-HCIW  | MJA1-SXIW  |
-|:------------------------ |:---------- |:---------- |
-| 睡眠功耗(uA)             | <0.5       | <1         |
-| 空闲功耗(uA)             | <10        | < 460      |
-| 典型运行功耗（mA）       | 1          | 10         |
-| 最大峰值电流（mA）       | 3          | 18         |
-| 典型签名用时（ms)        | 38         | 78         |
-| 典型验签用时（ms）       | 69         | 152        |
-| 典型生成密钥对用时（ms） | 32         | 66         |
-| 典型秘钥协商用时（ms）   | 41         | 130        |
-| 工作温度范围（摄氏度）   | -40 ~ +85  | -40 ~ +105 |
-| ESD                      | 8KV（HBM） | 5KV（HBM） |
-| 包装                     | 卷带包装   | 卷带包装   |
-| 安全认证                 | 国内EAL4+  | 国际EAL5+  |
-
-两颗芯片pin-to-pin，主要应用区别是温度范围和认证不同。出国内市场产品建议量产使用MJA1-HCIW，海外市场建议使用MJA1-SXIW。请根据产品定义与销售区域选择合适产品。
-
-请详细阅读MJA1规格书，按照参考电路设计使用。米家一次可免费提供20PCS芯片样品、2块开发板，供开发调试使用。更多需求请与小米供应链联系采购。供应链联系方式：刘亚妹 liuyamei@xiaomi.com
-
-## FAQ
+## 4.FAQ
 
 #### Q: 有问题怎么办？
 A: 关于产品定义或[小米IoT开发者平台](https://iot.mi.com/)的问题，请联系米家产品经理。技术问题请区分是芯片开发的问题还是米家接入的问题。如果是芯片开发的问题，请联系厂商 FAE，如果是米家接入的问题，请先搜索[米家高安全级接入示例demo](https://github.com/MiEcosystem/mijia_ble_secure)相关 issue，看是否有类似的问题。如果没有，请按照模板创建新 issue。
